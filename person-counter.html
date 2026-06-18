@@ -3,147 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automatic Person Counter</title>
+    <title>Person Counter</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
             background: white;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
+        h1 {
             text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
+            color: #333;
             margin-bottom: 10px;
         }
 
-        .content {
-            padding: 30px;
-        }
-
-        .video-section {
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        video {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .camera-controls {
-            padding: 20px;
-            background: #f5f5f5;
-            border-radius: 10px;
+        .subtitle {
+            text-align: center;
+            color: #666;
             margin-bottom: 30px;
         }
 
-        .control-group {
-            margin-bottom: 15px;
+        .counter-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .control-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
+        .counter-display h2 {
+            font-size: 4em;
+            margin: 0;
+            line-height: 1;
         }
 
-        .control-group input[type="range"] {
-            width: 100%;
-            cursor: pointer;
+        .counter-display p {
+            font-size: 1.2em;
+            margin: 10px 0 0 0;
         }
 
-        .stats-grid {
+        .button-group {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             margin-bottom: 30px;
         }
 
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        button {
+            padding: 20px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-in {
+            background: #4ecca3;
             color: white;
-            padding: 25px;
-            border-radius: 10px;
+        }
+
+        .btn-in:hover {
+            background: #3db892;
+            transform: scale(1.05);
+        }
+
+        .btn-out {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-out:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
             text-align: center;
         }
 
-        .stat-card h3 {
-            font-size: 3em;
-            margin-bottom: 10px;
+        .stat h3 {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 0.9em;
         }
 
-        .stat-card p {
-            font-size: 1.1em;
-            opacity: 0.9;
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
         }
 
-        .status-indicator {
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: #ccc;
-            margin-right: 10px;
-        }
-
-        .status-indicator.active {
-            background: #4ecca3;
-            box-shadow: 0 0 10px #4ecca3;
-            animation: pulse 0.6s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .log-section {
-            background: #f5f5f5;
+        .log {
+            background: #f9f9f9;
             padding: 20px;
-            border-radius: 10px;
-            max-height: 400px;
+            border-radius: 8px;
+            max-height: 300px;
             overflow-y: auto;
+            margin-bottom: 20px;
         }
 
-        .log-section h3 {
-            margin-bottom: 15px;
+        .log h3 {
+            margin: 0 0 15px 0;
             color: #333;
         }
 
         .log-item {
             background: white;
             padding: 10px 15px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-left: 4px solid #667eea;
             border-radius: 4px;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
 
         .log-item.in {
@@ -154,254 +147,130 @@
             border-left-color: #ff6b6b;
         }
 
-        .timestamp {
+        .time {
             color: #999;
             font-size: 0.85em;
         }
 
-        .buttons {
+        .controls {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
-        button {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 14px;
             background: #667eea;
             color: white;
         }
 
-        .btn-primary:hover {
+        .btn-small:hover {
             background: #5568d3;
         }
 
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
+        .btn-reset {
+            background: #f44336;
         }
 
-        .btn-secondary:hover {
-            background: #e0e0e0;
+        .btn-reset:hover {
+            background: #da190b;
         }
 
-        .btn-danger {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #ff5252;
-        }
-
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .stat-card h3 {
-                font-size: 2em;
-            }
+        .empty-log {
+            text-align: center;
+            color: #999;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📹 Automatic Person Counter</h1>
-            <p>Real-time motion detection & occupancy tracking</p>
+        <h1>👥 Person Counter</h1>
+        <p class="subtitle">Real-time occupancy tracking</p>
+
+        <div class="counter-display">
+            <h2 id="count">0</h2>
+            <p>Current Occupancy</p>
         </div>
 
-        <div class="content">
-            <div class="info-box">
-                ℹ️ <strong>How it works:</strong> Your camera detects motion to automatically count people entering and exiting. Allow camera access when prompted.
-            </div>
+        <div class="button-group">
+            <button class="btn-in" onclick="addPerson()">➕ PERSON IN</button>
+            <button class="btn-out" onclick="removePerson()">➖ PERSON OUT</button>
+        </div>
 
-            <!-- Camera Feed -->
-            <div class="video-section">
-                <video id="video" autoplay playsinline></video>
-                <canvas id="canvas" style="display:none;"></canvas>
+        <div class="stats">
+            <div class="stat">
+                <h3>Total IN</h3>
+                <div class="stat-value" id="totalIn">0</div>
             </div>
+            <div class="stat">
+                <h3>Total OUT</h3>
+                <div class="stat-value" id="totalOut">0</div>
+            </div>
+        </div>
 
-            <!-- Camera Controls -->
-            <div class="camera-controls">
-                <div class="control-group">
-                    <label>Motion Detection Sensitivity: <span id="sensitivityValue">50</span>%</label>
-                    <input type="range" id="sensitivity" min="10" max="100" value="50">
-                </div>
-                <div class="control-group">
-                    <label>Minimum motion pixels: <span id="pixelValue">500</span></label>
-                    <input type="range" id="minPixels" min="100" max="5000" value="500" step="100">
-                </div>
-                <div class="buttons">
-                    <button class="btn-primary" onclick="startCamera()">🎥 Start Camera</button>
-                    <button class="btn-secondary" onclick="stopCamera()">⏹️ Stop Camera</button>
-                    <button class="btn-danger" onclick="resetCounter()">🔄 Reset Counter</button>
-                    <button class="btn-primary" onclick="exportReport()">📥 Export Report</button>
-                </div>
-            </div>
+        <div class="log">
+            <h3>📋 Activity Log</h3>
+            <div id="logContainer" class="empty-log">No activity yet</div>
+        </div>
 
-            <!-- Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3 id="currentCount">0</h3>
-                    <p>Current Occupancy</p>
-                    <small><span class="status-indicator" id="statusIndicator"></span>Camera: <span id="cameraStatus">Waiting...</span></small>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalIn">0</h3>
-                    <p>Total IN (Today)</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalOut">0</h3>
-                    <p>Total OUT (Today)</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="peakCount">0</h3>
-                    <p>Peak Occupancy</p>
-                </div>
-            </div>
-
-            <!-- Activity Log -->
-            <div class="log-section">
-                <h3>📋 Activity Log</h3>
-                <div id="logContainer">
-                    <div style="color: #999; text-align: center; padding: 20px;">No activity yet</div>
-                </div>
-            </div>
+        <div class="controls">
+            <button class="btn-small" onclick="exportReport()">📥 Export Report</button>
+            <button class="btn-small btn-reset" onclick="resetAll()">🔄 Reset All</button>
         </div>
     </div>
 
     <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-
         let currentCount = 0;
         let totalIn = 0;
         let totalOut = 0;
-        let peakCount = 0;
-        let logs = JSON.parse(localStorage.getItem('personLogs')) || [];
-        let cameraActive = false;
-        let lastMotionTime = 0;
-        let motionCooldown = 3000; // 3 seconds between detections
-        let lastFrameData = null;
+        let logs = JSON.parse(localStorage.getItem('personCounterLogs')) || [];
 
-        // Update sensitivity display
-        document.getElementById('sensitivity').addEventListener('input', (e) => {
-            document.getElementById('sensitivityValue').textContent = e.target.value;
-        });
-
-        document.getElementById('minPixels').addEventListener('input', (e) => {
-            document.getElementById('pixelValue').textContent = e.target.value;
-        });
-
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
-                .then(stream => {
-                    video.srcObject = stream;
-                    cameraActive = true;
-                    document.getElementById('cameraStatus').textContent = 'Active';
-                    document.getElementById('statusIndicator').classList.add('active');
-                    detectMotion();
-                })
-                .catch(err => {
-                    alert('Camera access denied. Please allow camera access.');
-                    console.error(err);
-                });
+        function addPerson() {
+            currentCount++;
+            totalIn++;
+            addLog('IN', 'Person entered');
+            updateDisplay();
         }
 
-        function stopCamera() {
-            const stream = video.srcObject;
-            const tracks = stream?.getTracks();
-            tracks?.forEach(track => track.stop());
-            cameraActive = false;
-            document.getElementById('cameraStatus').textContent = 'Stopped';
-            document.getElementById('statusIndicator').classList.remove('active');
-        }
-
-        function detectMotion() {
-            if (!cameraActive) return;
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            ctx.drawImage(video, 0, 0);
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-
-            let motionPixels = 0;
-
-            if (lastFrameData) {
-                for (let i = 0; i < data.length; i += 4) {
-                    const diff = Math.abs(data[i] - lastFrameData[i]) +
-                                 Math.abs(data[i + 1] - lastFrameData[i + 1]) +
-                                 Math.abs(data[i + 2] - lastFrameData[i + 2]);
-                    
-                    if (diff > (document.getElementById('sensitivity').value * 2)) {
-                        motionPixels++;
-                    }
-                }
-
-                const minPixels = parseInt(document.getElementById('minPixels').value);
-                const threshold = (minPixels / 100) * (canvas.width * canvas.height);
-
-                if (motionPixels > threshold && Date.now() - lastMotionTime > motionCooldown) {
-                    // Motion detected - assume person entering
-                    currentCount++;
-                    totalIn++;
-                    peakCount = Math.max(peakCount, currentCount);
-                    lastMotionTime = Date.now();
-                    
-                    addLog('IN', 'Motion detected - person entering');
-                    updateStats();
-                }
+        function removePerson() {
+            if (currentCount > 0) {
+                currentCount--;
+                totalOut++;
+                addLog('OUT', 'Person exited');
+                updateDisplay();
+            } else {
+                alert('Count cannot be negative!');
             }
-
-            lastFrameData = new Uint8ClampedArray(data);
-            requestAnimationFrame(detectMotion);
         }
 
         function addLog(type, message) {
-            const timestamp = new Date().toLocaleTimeString();
+            const time = new Date().toLocaleTimeString();
             const log = {
                 type: type,
                 message: message,
-                timestamp: timestamp,
+                time: time,
                 datetime: new Date().toISOString()
             };
 
             logs.unshift(log);
-            localStorage.setItem('personLogs', JSON.stringify(logs));
+            localStorage.setItem('personCounterLogs', JSON.stringify(logs));
             updateLogDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('count').textContent = currentCount;
+            document.getElementById('totalIn').textContent = totalIn;
+            document.getElementById('totalOut').textContent = totalOut;
         }
 
         function updateLogDisplay() {
             const container = document.getElementById('logContainer');
-            
+
             if (logs.length === 0) {
-                container.innerHTML = '<div style="color: #999; text-align: center; padding: 20px;">No activity yet</div>';
+                container.innerHTML = '<div class="empty-log">No activity yet</div>';
                 return;
             }
 
@@ -409,53 +278,48 @@
                 <div class="log-item ${log.type.toLowerCase()}">
                     <strong>${log.type}</strong> - ${log.message}
                     <br>
-                    <span class="timestamp">${log.timestamp}</span>
+                    <span class="time">${log.time}</span>
                 </div>
             `).join('');
         }
 
-        function updateStats() {
-            document.getElementById('currentCount').textContent = currentCount;
-            document.getElementById('totalIn').textContent = totalIn;
-            document.getElementById('totalOut').textContent = totalOut;
-            document.getElementById('peakCount').textContent = peakCount;
-        }
-
-        function resetCounter() {
-            if (confirm('Reset all counters?')) {
-                currentCount = 0;
-                totalIn = 0;
-                totalOut = 0;
-                peakCount = 0;
-                logs = [];
-                localStorage.removeItem('personLogs');
-                updateStats();
-                updateLogDisplay();
-                alert('Counters reset!');
-            }
-        }
-
         function exportReport() {
             const date = new Date().toLocaleDateString();
-            const report = `Person Counter Report - ${date}
-                
+            const time = new Date().toLocaleTimeString();
+            const report = `PERSON COUNTER REPORT
+Date: ${date}
+Time: ${time}
+
+SUMMARY:
 Current Occupancy: ${currentCount}
 Total IN: ${totalIn}
 Total OUT: ${totalOut}
-Peak Occupancy: ${peakCount}
 
-Activity Log:
-${logs.map(log => `${log.timestamp} - ${log.type}: ${log.message}`).join('\n')}
+ACTIVITY LOG:
+${logs.map((log, i) => `${i + 1}. ${log.time} - ${log.type}: ${log.message}`).join('\n')}
             `;
 
             const link = document.createElement('a');
             link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(report);
-            link.download = `person-counter-report-${date}.txt`;
+            link.download = `person-counter-${date}.txt`;
             link.click();
         }
 
+        function resetAll() {
+            if (confirm('Reset all counters? This cannot be undone!')) {
+                currentCount = 0;
+                totalIn = 0;
+                totalOut = 0;
+                logs = [];
+                localStorage.removeItem('personCounterLogs');
+                updateDisplay();
+                updateLogDisplay();
+                alert('All data reset!');
+            }
+        }
+
         // Initialize
-        updateStats();
+        updateDisplay();
         updateLogDisplay();
     </script>
 </body>
