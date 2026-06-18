@@ -13,8 +13,9 @@ let score = 0;
 let highScore = localStorage.getItem('snakeHighScore') || 0;
 let gameRunning = false;
 let gamePaused = false;
-let gameLoop;
 let gameSpeed = 100; // Initial speed in milliseconds
+let lastMoveTime = 0;
+let animationId = null;
 
 // Initialize high score display
 document.getElementById('highScore').textContent = highScore;
@@ -57,8 +58,9 @@ function startGame() {
     if (!gameRunning) {
         gameRunning = true;
         gamePaused = false;
+        lastMoveTime = 0;
         document.getElementById('statusText').textContent = 'Game Running...';
-        gameLoop = setInterval(update, gameSpeed);
+        gameLoop();
     }
 }
 
@@ -66,17 +68,17 @@ function pauseGame() {
     if (gameRunning) {
         gamePaused = !gamePaused;
         if (gamePaused) {
-            clearInterval(gameLoop);
             document.getElementById('statusText').textContent = 'Game Paused - Press PAUSE to Resume';
         } else {
             document.getElementById('statusText').textContent = 'Game Running...';
-            gameLoop = setInterval(update, gameSpeed);
+            lastMoveTime = 0;
+            gameLoop();
         }
     }
 }
 
 function resetGame() {
-    clearInterval(gameLoop);
+    if (animationId) cancelAnimationFrame(animationId);
     snake = [{ x: 10, y: 10 }];
     food = { x: 15, y: 15 };
     direction = { x: 1, y: 0 };
@@ -85,9 +87,21 @@ function resetGame() {
     gameSpeed = 100; // Reset speed
     gameRunning = false;
     gamePaused = false;
+    lastMoveTime = 0;
     document.getElementById('score').textContent = '0';
     document.getElementById('statusText').textContent = 'Press START or use arrow keys to play';
     draw();
+}
+
+function gameLoop(currentTime = 0) {
+    if (!gameRunning || gamePaused) return;
+
+    if (currentTime - lastMoveTime > gameSpeed) {
+        update();
+        lastMoveTime = currentTime;
+    }
+
+    animationId = requestAnimationFrame(gameLoop);
 }
 
 function update() {
@@ -115,15 +129,9 @@ function update() {
         score += 10;
         document.getElementById('score').textContent = score;
         
-        // Increase game speed - decrease interval by 5% for every 50 points
-        const speedIncrease = Math.floor(score / 50);
-        gameSpeed = Math.max(30, 100 - speedIncrease * 5); // Minimum speed of 30ms
-        
-        // Restart the game loop with new speed if game is running
-        if (gameRunning && !gamePaused) {
-            clearInterval(gameLoop);
-            gameLoop = setInterval(update, gameSpeed);
-        }
+        // Increase game speed - decrease interval by 3ms for every 10 points
+        const speedIncrease = Math.floor(score / 10);
+        gameSpeed = Math.max(30, 100 - speedIncrease * 3); // Minimum speed of 30ms
         
         generateFood();
     } else {
@@ -222,7 +230,7 @@ function draw() {
 }
 
 function endGame() {
-    clearInterval(gameLoop);
+    if (animationId) cancelAnimationFrame(animationId);
     gameRunning = false;
     gamePaused = false;
 
