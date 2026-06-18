@@ -14,6 +14,7 @@ let highScore = localStorage.getItem('snakeHighScore') || 0;
 let gameRunning = false;
 let gamePaused = false;
 let gameLoop;
+let gameSpeed = 100; // Initial speed in milliseconds
 
 // Initialize high score display
 document.getElementById('highScore').textContent = highScore;
@@ -57,7 +58,7 @@ function startGame() {
         gameRunning = true;
         gamePaused = false;
         document.getElementById('statusText').textContent = 'Game Running...';
-        gameLoop = setInterval(update, 100);
+        gameLoop = setInterval(update, gameSpeed);
     }
 }
 
@@ -69,7 +70,7 @@ function pauseGame() {
             document.getElementById('statusText').textContent = 'Game Paused - Press PAUSE to Resume';
         } else {
             document.getElementById('statusText').textContent = 'Game Running...';
-            gameLoop = setInterval(update, 100);
+            gameLoop = setInterval(update, gameSpeed);
         }
     }
 }
@@ -81,6 +82,7 @@ function resetGame() {
     direction = { x: 1, y: 0 };
     nextDirection = { x: 1, y: 0 };
     score = 0;
+    gameSpeed = 100; // Reset speed
     gameRunning = false;
     gamePaused = false;
     document.getElementById('score').textContent = '0';
@@ -95,11 +97,9 @@ function update() {
     // Calculate new head position
     const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
 
-    // Check wall collision
-    if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-        endGame();
-        return;
-    }
+    // Check wall collision - WRAP AROUND instead of ending game
+    head.x = (head.x + tileCount) % tileCount;
+    head.y = (head.y + tileCount) % tileCount;
 
     // Check self collision
     if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
@@ -114,6 +114,17 @@ function update() {
     if (head.x === food.x && head.y === food.y) {
         score += 10;
         document.getElementById('score').textContent = score;
+        
+        // Increase game speed - decrease interval by 5% for every 50 points
+        const speedIncrease = Math.floor(score / 50);
+        gameSpeed = Math.max(30, 100 - speedIncrease * 5); // Minimum speed of 30ms
+        
+        // Restart the game loop with new speed if game is running
+        if (gameRunning && !gamePaused) {
+            clearInterval(gameLoop);
+            gameLoop = setInterval(update, gameSpeed);
+        }
+        
         generateFood();
     } else {
         // Remove tail if no food eaten
