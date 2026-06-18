@@ -3,816 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gate Entry Management System</title>
+    <title>Gate Entry</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
             padding: 20px;
+            background: #f5f5f5;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
+        
+        h1 {
             text-align: center;
+            color: #333;
         }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .content {
+        
+        .container {
+            background: white;
             padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .tab-button {
-            padding: 12px 25px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab-button.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        .tab-button:hover {
-            color: #667eea;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .form-section {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .form-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-        }
-
-        .form-grid {
+        
+        .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
         }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
         }
-
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 0.95em;
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
         }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 0.95em;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
-
+        
         button {
+            background: #4CAF50;
+            color: white;
             padding: 12px 30px;
-            font-size: 1em;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
+            font-size: 16px;
+            margin-right: 10px;
         }
-
-        .btn-primary {
-            background: #667eea;
-            color: white;
+        
+        button:hover {
+            background: #45a049;
         }
-
-        .btn-primary:hover {
-            background: #5568d3;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-
-        .btn-danger {
-            background: #ff6b6b;
-            color: white;
+        
+        .btn-delete {
+            background: #f44336;
             padding: 6px 12px;
-            font-size: 0.85em;
+            font-size: 12px;
         }
-
-        .btn-danger:hover {
-            background: #ff5252;
+        
+        .btn-delete:hover {
+            background: #da190b;
         }
-
-        .table-wrapper {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
+            margin-top: 30px;
         }
-
-        thead {
-            background: #667eea;
-            color: white;
-        }
-
-        th {
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            white-space: nowrap;
-            font-size: 0.9em;
-        }
-
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 0.9em;
-        }
-
-        tbody tr:hover {
-            background: #f5f5f5;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #fafafa;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .search-bar input {
-            flex: 1;
+        
+        th, td {
+            border: 1px solid #ddd;
             padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 1em;
+            text-align: left;
         }
-
-        .search-bar input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-
-        .badge-success {
-            background: #4ecca3;
+        
+        th {
+            background: #4CAF50;
             color: white;
         }
-
-        .badge-warning {
-            background: #ffd700;
-            color: #333;
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
         }
-
-        .badge-danger {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+        
+        .buttons {
+            margin-top: 20px;
             text-align: center;
-        }
-
-        .stat-card h3 {
-            font-size: 2em;
-            margin-bottom: 5px;
-        }
-
-        .stat-card p {
-            opacity: 0.9;
-            font-size: 0.95em;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .empty-state h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        @media print {
-            body {
-                background: white;
-            }
-            .tabs, .button-group, .search-bar, .export-buttons {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            table {
-                font-size: 0.8em;
-            }
-
-            th, td {
-                padding: 8px;
-            }
         }
     </style>
 </head>
 <body>
+    <h1>🚗 Gate Entry System</h1>
+    
     <div class="container">
-        <div class="header">
-            <h1>🏭 Gate Entry Management System</h1>
-            <p>Scrap Vehicle Tracking & Documentation</p>
-        </div>
-
-        <div class="content">
-            <!-- Tabs -->
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab('entry')">📝 New Entry</button>
-                <button class="tab-button" onclick="switchTab('dashboard')">📊 Dashboard</button>
-                <button class="tab-button" onclick="switchTab('records')">📋 Records</button>
-            </div>
-
-            <!-- New Entry Tab -->
-            <div id="entry" class="tab-content active">
-                <form id="gateEntryForm" onsubmit="addEntry(event)">
-                    <!-- Gate In Details -->
-                    <div class="form-section">
-                        <div class="form-title">🚗 Vehicle & Party Information</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>S/N</label>
-                                <input type="number" id="sn" placeholder="Serial Number" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Zone</label>
-                                <input type="text" id="zone" placeholder="e.g., Zone A" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Business Unit (BU)</label>
-                                <input type="text" id="bu" placeholder="e.g., BU-001" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Plant Name</label>
-                                <input type="text" id="plantName" placeholder="Plant name" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Vehicle Number</label>
-                                <input type="text" id="vehicleNo" placeholder="e.g., MH-01-AB-1234" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Transporter</label>
-                                <input type="text" id="transporter" placeholder="Transporter name" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Party Name</label>
-                                <input type="text" id="partyName" placeholder="Party name" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Scrap Type</label>
-                                <select id="scrapType" required>
-                                    <option value="">-- Select Scrap Type --</option>
-                                    <option value="Metal">Metal Scrap</option>
-                                    <option value="Plastic">Plastic Scrap</option>
-                                    <option value="Paper">Paper Scrap</option>
-                                    <option value="Glass">Glass Scrap</option>
-                                    <option value="Mixed">Mixed Scrap</option>
-                                    <option value="E-waste">E-waste</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Loading Type</label>
-                                <select id="loadingType" required>
-                                    <option value="">-- Select Loading Type --</option>
-                                    <option value="Loose">Loose</option>
-                                    <option value="Baled">Baled</option>
-                                    <option value="Bagged">Bagged</option>
-                                    <option value="Container">Container</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Gate In Timing -->
-                    <div class="form-section">
-                        <div class="form-title">🚪 Gate In Details</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Gate In Date</label>
-                                <input type="date" id="gateInDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Gate In Time</label>
-                                <input type="time" id="gateInTime" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Weighment Details -->
-                    <div class="form-section">
-                        <div class="form-title">⚖️ Weighment Details</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Tare Weight (KG)</label>
-                                <input type="number" id="tareWt" placeholder="0" step="0.01" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Tare Date</label>
-                                <input type="date" id="tareDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Tare Time</label>
-                                <input type="time" id="tareTime" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Gross Weight (KG)</label>
-                                <input type="number" id="grossWt" placeholder="0" step="0.01" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Gross Date</label>
-                                <input type="date" id="grossDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Gross Time</label>
-                                <input type="time" id="grossTime" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Net Weight (KG)</label>
-                                <input type="number" id="netWt" placeholder="Auto-calculated" step="0.01" readonly>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Loading Details -->
-                    <div class="form-section">
-                        <div class="form-title">📦 Loading Duration</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Load Start Date</label>
-                                <input type="date" id="loadStartDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Load Start Time</label>
-                                <input type="time" id="loadStartTime" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Load End Date</label>
-                                <input type="date" id="loadEndDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Load End Time</label>
-                                <input type="time" id="loadEndTime" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Invoice Details -->
-                    <div class="form-section">
-                        <div class="form-title">🧾 Invoice Details</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Invoice Date</label>
-                                <input type="date" id="invoiceDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Invoice Time</label>
-                                <input type="time" id="invoiceTime" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Gate Exit Details -->
-                    <div class="form-section">
-                        <div class="form-title">🚪 Gate Exit Details</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Gate Exit Date</label>
-                                <input type="date" id="gateExitDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Gate Exit Time</label>
-                                <input type="time" id="gateExitTime" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Additional Info -->
-                    <div class="form-section">
-                        <div class="form-title">📝 Additional Information</div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Delay Point</label>
-                                <input type="text" id="delayPoint" placeholder="Where was delay observed?">
-                            </div>
-                            <div class="form-group">
-                                <label>Reason for Delay</label>
-                                <input type="text" id="reason" placeholder="Reason for delay">
-                            </div>
-                            <div class="form-group">
-                                <label>Remarks</label>
-                                <textarea id="remarks" placeholder="Additional remarks..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="reset" class="btn-secondary">Clear</button>
-                        <button type="submit" class="btn-primary">✓ Submit Entry</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Dashboard Tab -->
-            <div id="dashboard" class="tab-content">
-                <div class="form-title">📊 Dashboard Overview</div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3 id="totalEntries">0</h3>
-                        <p>Total Entries</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3 id="totalScrap">0</h3>
-                        <p>Total Scrap (KG)</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3 id="avgLoadTime">0</h3>
-                        <p>Avg Loading Time</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3 id="avgHoldingTime">0</h3>
-                        <p>Avg Holding Time</p>
-                    </div>
+        <h2>Add New Entry</h2>
+        
+        <form id="form" onsubmit="addEntry(event)">
+            <div class="form-row">
+                <div>
+                    <label>Vehicle No.</label>
+                    <input type="text" id="vehicle" required>
+                </div>
+                <div>
+                    <label>Zone</label>
+                    <input type="text" id="zone" required>
+                </div>
+                <div>
+                    <label>Party Name</label>
+                    <input type="text" id="party" required>
                 </div>
             </div>
-
-            <!-- Records Tab -->
-            <div id="records" class="tab-content">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="Search by Vehicle No., Party Name, or Zone..." onkeyup="filterTable()">
-                    <button class="btn-primary" onclick="exportToCSV()">📥 Export CSV</button>
-                    <button class="btn-secondary" onclick="printTable()">🖨️ Print</button>
+            
+            <div class="form-row">
+                <div>
+                    <label>Scrap Type</label>
+                    <select id="scrapType" required>
+                        <option>Metal</option>
+                        <option>Plastic</option>
+                        <option>Paper</option>
+                        <option>Glass</option>
+                        <option>Mixed</option>
+                    </select>
                 </div>
-
-                <div class="table-wrapper">
-                    <table id="gateTable">
-                        <thead>
-                            <tr>
-                                <th>S/N</th>
-                                <th>Vehicle No.</th>
-                                <th>Zone</th>
-                                <th>Party Name</th>
-                                <th>Scrap Type</th>
-                                <th>Gate In</th>
-                                <th>Net Wt (KG)</th>
-                                <th>Load Time</th>
-                                <th>Total Stay</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                        </tbody>
-                    </table>
+                <div>
+                    <label>Gate In Date</label>
+                    <input type="date" id="gateInDate" required>
                 </div>
-                <div id="emptyState" class="empty-state">
-                    <h3>No Records Found</h3>
-                    <p>Add a new gate entry to get started</p>
+                <div>
+                    <label>Gate In Time</label>
+                    <input type="time" id="gateInTime" required>
                 </div>
             </div>
-        </div>
+            
+            <div class="form-row">
+                <div>
+                    <label>Tare Weight (KG)</label>
+                    <input type="number" id="tare" step="0.01" required>
+                </div>
+                <div>
+                    <label>Gross Weight (KG)</label>
+                    <input type="number" id="gross" step="0.01" required>
+                </div>
+                <div>
+                    <label>Net Weight (KG)</label>
+                    <input type="number" id="net" readonly>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div>
+                    <label>Gate Out Date</label>
+                    <input type="date" id="gateOutDate" required>
+                </div>
+                <div>
+                    <label>Gate Out Time</label>
+                    <input type="time" id="gateOutTime" required>
+                </div>
+                <div>
+                    <label>Remarks</label>
+                    <input type="text" id="remarks">
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button type="submit">✓ Add Entry</button>
+                <button type="reset">Clear</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="container">
+        <h2>All Entries</h2>
+        <button onclick="exportCSV()">📥 Export CSV</button>
+        <button onclick="clearAll()">🗑️ Clear All</button>
+        
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>Vehicle</th>
+                    <th>Party</th>
+                    <th>Zone</th>
+                    <th>Scrap</th>
+                    <th>Net Wt</th>
+                    <th>Gate In</th>
+                    <th>Gate Out</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
     </div>
 
     <script>
-        let gateEntries = JSON.parse(localStorage.getItem('gateEntries')) || [];
-
-        // Set today's date by default
+        let data = JSON.parse(localStorage.getItem('entries')) || [];
+        
+        // Auto calculate net weight
+        document.getElementById('tare').addEventListener('change', calcNet);
+        document.getElementById('gross').addEventListener('change', calcNet);
+        
+        function calcNet() {
+            const net = document.getElementById('gross').value - document.getElementById('tare').value;
+            document.getElementById('net').value = net.toFixed(2);
+        }
+        
+        // Set today's date
         document.getElementById('gateInDate').valueAsDate = new Date();
-        document.getElementById('gateInTime').value = new Date().toTimeString().slice(0, 5);
-
-        // Calculate net weight
-        document.getElementById('grossWt').addEventListener('change', calculateNetWeight);
-        document.getElementById('tareWt').addEventListener('change', calculateNetWeight);
-
-        function calculateNetWeight() {
-            const gross = parseFloat(document.getElementById('grossWt').value) || 0;
-            const tare = parseFloat(document.getElementById('tareWt').value) || 0;
-            document.getElementById('netWt').value = (gross - tare).toFixed(2);
-        }
-
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-
-            if (tabName === 'records') updateTable();
-            if (tabName === 'dashboard') updateDashboard();
-        }
-
+        
         function addEntry(e) {
             e.preventDefault();
-
+            
             const entry = {
-                sn: document.getElementById('sn').value,
+                vehicle: document.getElementById('vehicle').value,
                 zone: document.getElementById('zone').value,
-                bu: document.getElementById('bu').value,
-                plantName: document.getElementById('plantName').value,
-                vehicleNo: document.getElementById('vehicleNo').value,
-                transporter: document.getElementById('transporter').value,
-                partyName: document.getElementById('partyName').value,
+                party: document.getElementById('party').value,
                 scrapType: document.getElementById('scrapType').value,
-                loadingType: document.getElementById('loadingType').value,
                 gateInDate: document.getElementById('gateInDate').value,
                 gateInTime: document.getElementById('gateInTime').value,
-                tareWt: parseFloat(document.getElementById('tareWt').value),
-                tareDate: document.getElementById('tareDate').value,
-                tareTime: document.getElementById('tareTime').value,
-                grossWt: parseFloat(document.getElementById('grossWt').value),
-                grossDate: document.getElementById('grossDate').value,
-                grossTime: document.getElementById('grossTime').value,
-                netWt: parseFloat(document.getElementById('netWt').value),
-                loadStartDate: document.getElementById('loadStartDate').value,
-                loadStartTime: document.getElementById('loadStartTime').value,
-                loadEndDate: document.getElementById('loadEndDate').value,
-                loadEndTime: document.getElementById('loadEndTime').value,
-                invoiceDate: document.getElementById('invoiceDate').value,
-                invoiceTime: document.getElementById('invoiceTime').value,
-                gateExitDate: document.getElementById('gateExitDate').value,
-                gateExitTime: document.getElementById('gateExitTime').value,
-                delayPoint: document.getElementById('delayPoint').value,
-                reason: document.getElementById('reason').value,
-                remarks: document.getElementById('remarks').value,
-                timestamp: new Date().toISOString()
+                tare: document.getElementById('tare').value,
+                gross: document.getElementById('gross').value,
+                net: document.getElementById('net').value,
+                gateOutDate: document.getElementById('gateOutDate').value,
+                gateOutTime: document.getElementById('gateOutTime').value,
+                remarks: document.getElementById('remarks').value
             };
-
-            gateEntries.push(entry);
-            localStorage.setItem('gateEntries', JSON.stringify(gateEntries));
-
-            alert('✓ Entry added successfully!');
-            document.getElementById('gateEntryForm').reset();
+            
+            data.push(entry);
+            localStorage.setItem('entries', JSON.stringify(data));
+            
+            alert('✓ Entry added!');
+            document.getElementById('form').reset();
             document.getElementById('gateInDate').valueAsDate = new Date();
-            document.getElementById('gateInTime').value = new Date().toTimeString().slice(0, 5);
+            showTable();
         }
-
-        function updateTable() {
-            const tableBody = document.getElementById('tableBody');
-            const emptyState = document.getElementById('emptyState');
-
-            if (gateEntries.length === 0) {
-                tableBody.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-            tableBody.innerHTML = gateEntries.map((entry, index) => {
-                const loadTime = calculateTimeDifference(
-                    entry.loadStartDate, entry.loadStartTime,
-                    entry.loadEndDate, entry.loadEndTime
-                );
-                const totalStay = calculateTimeDifference(
-                    entry.gateInDate, entry.gateInTime,
-                    entry.gateExitDate, entry.gateExitTime
-                );
-
-                return `
-                    <tr>
-                        <td>${entry.sn}</td>
-                        <td><strong>${entry.vehicleNo}</strong></td>
-                        <td>${entry.zone}</td>
-                        <td>${entry.partyName}</td>
-                        <td>${entry.scrapType}</td>
-                        <td>${entry.gateInDate} ${entry.gateInTime}</td>
-                        <td>${entry.netWt}</td>
-                        <td>${loadTime}</td>
-                        <td>${totalStay}</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-danger" onclick="editEntry(${index})">Edit</button>
-                                <button class="btn-danger" onclick="deleteEntry(${index})">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+        
+        function showTable() {
+            const tbody = document.getElementById('tbody');
+            tbody.innerHTML = data.map((e, i) => `
+                <tr>
+                    <td>${e.vehicle}</td>
+                    <td>${e.party}</td>
+                    <td>${e.zone}</td>
+                    <td>${e.scrapType}</td>
+                    <td>${e.net}</td>
+                    <td>${e.gateInDate} ${e.gateInTime}</td>
+                    <td>${e.gateOutDate} ${e.gateOutTime}</td>
+                    <td><button class="btn-delete" onclick="deleteRow(${i})">Delete</button></td>
+                </tr>
+            `).join('');
         }
-
-        function calculateTimeDifference(startDate, startTime, endDate, endTime) {
-            const start = new Date(`${startDate}T${startTime}`);
-            const end = new Date(`${endDate}T${endTime}`);
-            const diff = Math.abs(end - start) / 1000 / 60; // minutes
-            const hours = Math.floor(diff / 60);
-            const minutes = Math.floor(diff % 60);
-            return `${hours}h ${minutes}m`;
-        }
-
-        function updateDashboard() {
-            const totalEntries = gateEntries.length;
-            const totalScrap = gateEntries.reduce((sum, e) => sum + e.netWt, 0);
-
-            let totalLoadTime = 0;
-            let totalHoldingTime = 0;
-
-            gateEntries.forEach(entry => {
-                const loadStart = new Date(`${entry.loadStartDate}T${entry.loadStartTime}`);
-                const loadEnd = new Date(`${entry.loadEndDate}T${entry.loadEndTime}`);
-                totalLoadTime += (loadEnd - loadStart) / 1000 / 60;
-
-                const gateIn = new Date(`${entry.gateInDate}T${entry.gateInTime}`);
-                const gateExit = new Date(`${entry.gateExitDate}T${entry.gateExitTime}`);
-                totalHoldingTime += (gateExit - gateIn) / 1000 / 60;
-            });
-
-            const avgLoadTime = totalEntries > 0 ? Math.round(totalLoadTime / totalEntries) : 0;
-            const avgHoldingTime = totalEntries > 0 ? Math.round(totalHoldingTime / totalEntries) : 0;
-
-            document.getElementById('totalEntries').textContent = totalEntries;
-            document.getElementById('totalScrap').textContent = totalScrap.toFixed(2);
-            document.getElementById('avgLoadTime').textContent = avgLoadTime + ' min';
-            document.getElementById('avgHoldingTime').textContent = avgHoldingTime + ' min';
-        }
-
-        function filterTable() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const table = document.getElementById('gateTable');
-            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-            Array.from(rows).forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        }
-
-        function deleteEntry(index) {
-            if (confirm('Are you sure you want to delete this entry?')) {
-                gateEntries.splice(index, 1);
-                localStorage.setItem('gateEntries', JSON.stringify(gateEntries));
-                updateTable();
+        
+        function deleteRow(i) {
+            if (confirm('Delete this entry?')) {
+                data.splice(i, 1);
+                localStorage.setItem('entries', JSON.stringify(data));
+                showTable();
             }
         }
-
-        function editEntry(index) {
-            alert('Edit feature coming soon!');
-        }
-
-        function exportToCSV() {
-            if (gateEntries.length === 0) {
+        
+        function exportCSV() {
+            if (data.length === 0) {
                 alert('No data to export');
                 return;
             }
-
-            let csv = 'S/N,ZONE,BU,PLANT NAME,VEHICLE NO.,TRANSPORTER,PARTY NAME,SCRAP TYPE,LOADING TYPE,GATE IN DATE,GATE IN TIME,TARE WT,TARE DATE,TARE TIME,GROSS WT,GROSS DATE,GROSS TIME,NET WT,LOAD START DATE,LOAD START TIME,LOAD END DATE,LOAD END TIME,INVOICE DATE,INVOICE TIME,GATE EXIT DATE,GATE EXIT TIME,REMARKS\n';
-
-            gateEntries.forEach(entry => {
-                csv += `"${entry.sn}","${entry.zone}","${entry.bu}","${entry.plantName}","${entry.vehicleNo}","${entry.transporter}","${entry.partyName}","${entry.scrapType}","${entry.loadingType}","${entry.gateInDate}","${entry.gateInTime}","${entry.tareWt}","${entry.tareDate}","${entry.tareTime}","${entry.grossWt}","${entry.grossDate}","${entry.grossTime}","${entry.netWt}","${entry.loadStartDate}","${entry.loadStartTime}","${entry.loadEndDate}","${entry.loadEndTime}","${entry.invoiceDate}","${entry.invoiceTime}","${entry.gateExitDate}","${entry.gateExitTime}","${entry.remarks}"\n`;
+            
+            let csv = 'Vehicle,Party,Zone,Scrap Type,Net Wt,Gate In,Gate Out,Remarks\n';
+            data.forEach(e => {
+                csv += `"${e.vehicle}","${e.party}","${e.zone}","${e.scrapType}","${e.net}","${e.gateInDate} ${e.gateInTime}","${e.gateOutDate} ${e.gateOutTime}","${e.remarks}"\n`;
             });
-
+            
             const link = document.createElement('a');
             link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-            link.download = `Gate_Entries_${new Date().toISOString().split('T')[0]}.csv`;
+            link.download = 'gate-entries.csv';
             link.click();
         }
-
-        function printTable() {
-            window.print();
+        
+        function clearAll() {
+            if (confirm('Clear all entries?')) {
+                data = [];
+                localStorage.clear();
+                showTable();
+            }
         }
-
-        // Initialize
-        updateTable();
+        
+        showTable();
     </script>
 </body>
 </html>
